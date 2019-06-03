@@ -3523,7 +3523,6 @@ static int mdss_panel_parse_dt(struct device_node *np,
 		"qcom,mdss-dsi-panel-hbm-off-command",
 		"qcom,mdss-dsi-hbm-command-state");
 
-
 	ctrl_pdata->high_brightness_panel= of_property_read_bool(np,
 					"qcom,mdss-dsi-high-brightness-panel");
 	pr_err("high brightness panel: %d\n", ctrl_pdata->high_brightness_panel);
