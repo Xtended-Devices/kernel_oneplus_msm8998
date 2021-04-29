@@ -3924,6 +3924,9 @@ static int fg_psy_get_property(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_CC_STEP_SEL:
 		pval->intval = chip->ttf.cc_step.sel;
 		break;
+	case POWER_SUPPLY_PROP_FG_RESET_CLOCK:
+		pval->intval = 0;
+		break;
 	default:
 		pr_err("unsupported property %d\n", psp);
 		rc = -EINVAL;
@@ -3942,7 +3945,6 @@ static void oneplus_set_allow_read_iic(
 	struct fg_chip *chip, bool status);
 static void oneplus_set_lcd_off_status(
 	struct fg_chip *chip, bool status);
-
 static int fg_psy_set_property(struct power_supply *psy,
 				  enum power_supply_property psp,
 				  const union power_supply_propval *pval)
@@ -4037,6 +4039,13 @@ static int fg_psy_set_property(struct power_supply *psy,
 		rc = fg_set_jeita_threshold(chip, JEITA_HOT, pval->intval);
 		if (rc < 0) {
 			pr_err("Error in writing jeita_hot, rc=%d\n", rc);
+			return rc;
+		}
+		break;
+	case POWER_SUPPLY_PROP_FG_RESET_CLOCK:
+		rc = fg_bcl_reset(chip);
+		if (rc < 0) {
+			pr_err("Error in resetting BCL clock, rc=%d\n", rc);
 			return rc;
 		}
 		break;
