@@ -1613,6 +1613,11 @@ out_unlock:
 		rt_mutex_adjust_prio(current);
 	}
 
+	if (deboost) {
+		wake_up_q(&wake_q);
+		rt_mutex_adjust_prio(current);
+	}
+
 	return ret;
 }
 
